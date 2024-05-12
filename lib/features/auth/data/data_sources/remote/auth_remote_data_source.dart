@@ -3,16 +3,19 @@ import 'package:meoscleanarchitecture/features/auth/data/models/user_model.dart'
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract interface class AuthRemoteDataSource {
+  Session? get currentUserSession;
   Future<UserModel> signUpWithEmailPassword({
     required String name,
     required String email,
     required String password,
   });
 
-  Future<UserModel> loginWithEmailPassword({
+  Future<UserModel> signInWithEmailPassword({
     required String email,
     required String password,
   });
+
+  Future<UserModel?> getCurrentUserData();
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -20,16 +23,25 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   AuthRemoteDataSourceImpl(this.supabaseClient);
 
   @override
-  Future<UserModel> loginWithEmailPassword({
+  Session? get currentUserSession => supabaseClient.auth.currentSession;
+
+  @override
+  Future<UserModel> signInWithEmailPassword({
     required String email,
     required String password,
   }) async {
     try {
       final response = await supabaseClient.auth
           .signInWithPassword(password: password, email: email);
-    } catch (e) {}
 
-    throw UnimplementedError();
+      if (response.user == null) {
+        throw ServerException('User is null!');
+      }
+
+      return UserModel.fromJson(response.user!.toJson());
+    } catch (e) {
+      throw ServerException(e.toString());
+    }
   }
 
   @override
@@ -52,6 +64,22 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
 
       return UserModel.fromJson(response.user!.toJson());
+    } catch (e) {
+      throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<UserModel?> getCurrentUserData() async {
+    try {
+      if (currentUserSession == null) return null;
+
+      final user = await supabaseClient
+          .from('profiles')
+          .select()
+          .eq('id', currentUserSession!.user.id);
+      return UserModel.fromJson(user.first)
+          .copyWith(email: currentUserSession!.user.email);
     } catch (e) {
       throw ServerException(e.toString());
     }

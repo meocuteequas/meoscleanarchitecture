@@ -1,4 +1,6 @@
 import 'package:get_it/get_it.dart';
+import 'package:meoscleanarchitecture/features/auth/domain/usecases/current_user.dart';
+import 'package:meoscleanarchitecture/features/auth/domain/usecases/user_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:meoscleanarchitecture/core/secrets/app_secrets.dart';
 import 'package:meoscleanarchitecture/features/auth/presentation/bloc/auth_bloc.dart';
@@ -19,19 +21,30 @@ Future<void> initDependencies() async {
 }
 
 void _initAuth() {
-  sl.registerFactory<AuthRemoteDataSource>(
-    () => AuthRemoteDataSourceImpl(sl()),
-  );
+  // Data sources
+  sl
+    ..registerFactory<AuthRemoteDataSource>(
+      () => AuthRemoteDataSourceImpl(sl()),
+    )
 
-  sl.registerFactory<AuthRepository>(
-    () => AuthRepositoryImpl(sl()),
-  );
+    // Repository
+    ..registerFactory<AuthRepository>(
+      () => AuthRepositoryImpl(sl()),
+    )
 
-  sl.registerFactory(
-    () => UserSignUp(sl()),
-  );
+    // Use cases
+    ..registerFactory(
+      () => UserSignUp(sl()),
+    )
+    ..registerFactory(
+      () => UserSignIn(sl()),
+    )
+    ..registerFactory(
+      () => CurrentUser(sl()),
+    )
 
-  sl.registerLazySingleton(
-    () => AuthBloc(userSignUp: sl()),
-  );
+    // Bloc
+    ..registerLazySingleton(
+      () => AuthBloc(userSignUp: sl(), userSignIn: sl(), currentUser: sl()),
+    );
 }
