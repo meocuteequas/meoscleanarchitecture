@@ -18,6 +18,4 @@ final class AuthSignIn extends AuthEvent {
   AuthSignIn({required this.email, required this.password});
 }
 
-final class AuthGetCurrentUser extends AuthEvent {
-  AuthGetCurrentUser();
-}
+final class AuthCurrentUser extends AuthEvent {}

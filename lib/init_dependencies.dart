@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:meoscleanarchitecture/core/common/widgets/cubits/app_user/app_user_cubit.dart';
 import 'package:meoscleanarchitecture/features/auth/domain/usecases/current_user.dart';
 import 'package:meoscleanarchitecture/features/auth/domain/usecases/user_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -18,6 +19,9 @@ Future<void> initDependencies() async {
     anonKey: AppSecrets.supabaseAnonKey,
   );
   sl.registerLazySingleton(() => supabase.client);
+
+  // Core
+  sl.registerLazySingleton(() => AppUserCubit());
 }
 
 void _initAuth() {
@@ -45,6 +49,10 @@ void _initAuth() {
 
     // Bloc
     ..registerLazySingleton(
-      () => AuthBloc(userSignUp: sl(), userSignIn: sl(), currentUser: sl()),
+      () => AuthBloc(
+          userSignUp: sl(),
+          userSignIn: sl(),
+          currentUser: sl(),
+          appUserCubit: sl()),
     );
 }

@@ -2,7 +2,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:meoscleanarchitecture/core/error/exceptions.dart';
 import 'package:meoscleanarchitecture/core/error/failures.dart';
 import 'package:meoscleanarchitecture/features/auth/data/data_sources/remote/auth_remote_data_source.dart';
-import 'package:meoscleanarchitecture/features/auth/domain/entities/user.dart';
+import 'package:meoscleanarchitecture/core/common/entities/user.dart';
 import 'package:meoscleanarchitecture/features/auth/domain/repository/auth_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as sb;
 

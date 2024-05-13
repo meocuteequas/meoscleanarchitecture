@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meoscleanarchitecture/core/common/widgets/loader.dart';
 import 'package:meoscleanarchitecture/core/theme/app_pallete.dart';
