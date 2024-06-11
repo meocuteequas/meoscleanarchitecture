@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meoscleanarchitecture/core/common/widgets/cubits/app_user/app_user_cubit.dart';
+import 'package:meoscleanarchitecture/core/common/cubits/app_user/app_user_cubit.dart';
 import 'package:meoscleanarchitecture/core/usecase/usecase.dart';
 import 'package:meoscleanarchitecture/core/common/entities/user.dart';
 import 'package:meoscleanarchitecture/features/auth/domain/usecases/current_user.dart';

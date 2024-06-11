@@ -7,6 +7,7 @@ import 'package:meoscleanarchitecture/features/auth/presentation/bloc/auth_bloc.
 import 'package:meoscleanarchitecture/features/auth/presentation/pages/signup_page.dart';
 import 'package:meoscleanarchitecture/features/auth/presentation/widgets/auth_field.dart';
 import 'package:meoscleanarchitecture/features/auth/presentation/widgets/auth_gradient_button.dart';
+import 'package:meoscleanarchitecture/features/blog/presentation/pages/blog_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -38,6 +39,9 @@ class _LoginPageState extends State<LoginPage> {
           listener: (context, state) {
             if (state is AuthFailure) {
               showSnackBar(context, state.message);
+            } else if (state is AuthSuccess) {
+              Navigator.pushAndRemoveUntil(
+                  context, BlogPage.route(), (route) => false);
             }
           },
           builder: (context, state) {
